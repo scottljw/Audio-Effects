@@ -3,10 +3,10 @@
 // AY1718 Sem 1 EE2020 Project
 // Project Name: Audio Effects
 // Module Name: AUDIO_FX_TOP
-// Team No.: 
-// Student Names: 
-// Matric No.:
-// Description: 
+// Team No.: Wednesday Group 06
+// Student Names: Gao Qikai, Li Jiawei
+// Matric No.: A0177350E, A0177400M
+// Description: Top Module, controlling all others
 // 
 // Work Distribution:
 //////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ module AUDIO_FX_TOP(
     // Please create the clock divider module and instantiate it here.
       wire clk_20k;
       wire clk_50M;
-      
+      Clock_Generator u0 (CLK, clk_20k, clk_50M);
       
   
      //////////////////////////////////////////////////////////////////////////////////
