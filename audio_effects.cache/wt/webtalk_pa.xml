@@ -3,7 +3,7 @@
 <!--The data in this file is primarily intended for consumption by Xilinx tools.
 The structure and the elements are likely to change over the next few releases.
 This means code written to parse this file will need to be revisited each subsequent release.-->
-<application name="pa" timeStamp="Wed Mar 14 16:22:56 2018">
+<application name="pa" timeStamp="Wed Mar 14 20:39:32 2018">
 <section name="Project Information" visible="false">
 <property name="ProjectID" value="e5b60e75fc104303bdcaf12858b87b03" type="ProjectID"/>
 <property name="ProjectIteration" value="1" type="ProjectIteration"/>
@@ -18,65 +18,13 @@ This means code written to parse this file will need to be revisited each subseq
 </item>
 <item name="Java Command Handlers">
 <property name="AddSources" value="1" type="JavaHandler"/>
+<property name="EditUndo" value="1" type="JavaHandler"/>
 <property name="SaveFileProxyHandler" value="1" type="JavaHandler"/>
 </item>
-<item name="Gui Resources Info">
-<property name="AUDIO_FX_TOP.v, 120, 215" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 120, 215, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 126, 130" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 126, 130, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 129, 113" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 129, 113, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 131, 113" value="1" type="GuiResourceData"/>
-<property name="AUDIO_FX_TOP.v, 131, 113, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 10, 87" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 12, 239" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 14, 39" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 3, 318" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 337, 338" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 338, 114" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 338, 240" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 340, 88" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 340, 89" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 340, 89, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 343, 86" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 343, 86, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 347, 191" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 348, 191" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 349, 179" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 352, 259" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 352, 307" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 354, 89" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 36, 210" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 401, 363" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 403, 267" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 404, 109" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 405, 131" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 412, 291" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 412, 343" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 416, 208" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 437, 263" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 439, 275" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 440, 142" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 440, 142, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 454, 133" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 454, 133, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 46, 256" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 7, 261" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 8, 114" value="1" type="GuiResourceData"/>
-<property name="Basys3_Master.xdc, 8, 191" value="1" type="GuiResourceData"/>
-<property name="Clock_Generator.v, 124, 261" value="1" type="GuiResourceData"/>
-<property name="PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, [root, Constraints, constrs_1, Basys3_Master.xdc], 8, false" value="1" type="GuiResourceData"/>
-<property name="PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, [root, Constraints, constrs_1, Basys3_Master.xdc], 8, false, false, false, false, false, true" value="1" type="GuiResourceData"/>
-<property name="PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, [root, Constraints], 6" value="1" type="GuiResourceData"/>
-<property name="PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, [root, Design Sources, AUDIO_FX_TOP (AUDIO_FX_TOP.v" value="6" type="GuiResourceData"/>
-<property name="PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, [, Project Manager], 0, true" value="3" type="GuiResourceData"/>
-<property name="PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, [, Project Manager], 0, true, false, false, false, false, true" value="1" type="GuiResourceData"/>
-</item>
 <item name="Other">
-<property name="GuiMode" value="9" type="GuiMode"/>
+<property name="GuiMode" value="13" type="GuiMode"/>
 <property name="BatchMode" value="0" type="BatchMode"/>
-<property name="TclMode" value="8" type="TclMode"/>
+<property name="TclMode" value="10" type="TclMode"/>
 </item>
 </section>
 </application>
