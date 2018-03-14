@@ -18,7 +18,7 @@ module Clock_Generator(
     output clk_50M       // my 50MHz clock
     );
     reg counter2 = 0;                   // counter for 50M
-    reg [12:0] counter1 = {13 {1'b0}};  // counter for 20k
+    reg [12:0]counter1 = {13 {1'b0}};  // counter for 20k
     initial begin
         clk_20k = 0;
     end
