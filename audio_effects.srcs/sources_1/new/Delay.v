@@ -1,4 +1,4 @@
-`timescale 1us / 1ns
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // AY1718 Sem 1 EE2020 Project
 // Project Name: Audio Effects
@@ -12,21 +12,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module Delay(
-    input CLOCK,
-    input [7:0] data_in,
-    output [7:0] data_out
+    input CLOCK,                  // clock source is 20kHz
+    input [11:0] data_in,
+    output reg [11:0] data_out
     );
-    reg [7:0] memory [0:15];   // 2D array as buffer
-    reg [3:0] i = 0;           // writing position
-    reg [3:0] j = 5;           // reading position
-    reg [10:0] counter = 0;    // clock divider
-    always @ (posedge CLOCK) begin                         // clock source is 20kHz
-        counter <= (counter == 1999) ? 0 : (counter + 1);  // divide the frequency by 2k
-        if (counter == 0) begin                            // get a frequency of 10Hz
-            memory[i] <= data_in;
-            i <= i + 1;
-            j <= j + 1;
-        end
+    reg [11:0] memory [0:32767];  // 2D array as buffer
+    reg [14:0] i = 0;             // writing position
+    reg [14:0] j = 12768;         // reading position
+    always @ (posedge CLOCK) begin
+        memory[i] <= data_in;
+        i <= i + 1;
+        j <= j + 1;
+        data_out <= memory[j];    // delay is 16 - (5 + 1) = 10 periods, 1s
     end
-    assign data_out = memory[j];  // delay is 16 - (5 + 1) = 10 periods, 1s
 endmodule
