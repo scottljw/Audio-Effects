@@ -95,7 +95,6 @@
           <Attr Name="ImportTime" Val="1507296476"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/archive_project_summary.txt"/>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="AUDIO_FX_TOP"/>
