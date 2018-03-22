@@ -14,7 +14,7 @@
 module AUDIO_FX_TOP(
     input CLK,            // 100MHz FPGA clock
     
-    input [6:0] Keyboard, // Musical Keyboard Switches, 1 to 7 for C to B
+    input [7:1] Keyboard, // Musical Keyboard Switches, 1 to 7 for C to B
     input [1:0] SW,       // Mode Selection, 00 for original, 01 for delayed, 10 for instrumental
     
     input  J_MIC3_Pin3,   // PmodMIC3 audio input data (serial)
