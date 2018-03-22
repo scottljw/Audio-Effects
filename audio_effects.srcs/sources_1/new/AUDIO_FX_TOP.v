@@ -15,7 +15,7 @@ module AUDIO_FX_TOP(
     input CLK,            // 100MHz FPGA clock
     
     input [7:1] Keyboard, // Musical Keyboard Switches, 1 to 7 for C to B
-    input [1:0] SW,       // Mode Selection, 0 for original, 1 for delayed, 2 for instrumental
+    input [1:0] SW,       // Mode Selection, 00 for original, 01 for delayed, 10 for instrumental
     
     input  J_MIC3_Pin3,   // PmodMIC3 audio input data (serial)
     output J_MIC3_Pin1,   // PmodMIC3 chip select, 20kHz sampling clock
@@ -48,7 +48,7 @@ module AUDIO_FX_TOP(
       wire [11:0] instrumental;
       wire [11:0] weird;
       Delay f1 (clk_20k, MIC_in, delayed);
-      Music_Instrument f2 (Keyboard, instrumental);
+     // Music_Instrument f2 (Keyboard, instrumental);
       assign weird = MIC_in;
 
     
@@ -56,6 +56,7 @@ module AUDIO_FX_TOP(
                                          : instrumental
                                  : SW[0] ? delayed
                                          : MIC_in;
+                                         
     /////////////////////////////////////////////////////////////////////////////////////
     //DAC Module: Digital-to-Analog Conversion
     //Do not change the codes in this area        
