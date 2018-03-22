@@ -14,7 +14,7 @@
 module AUDIO_FX_TOP(
     input CLK,            // 100MHz FPGA clock
     
-    input [7:1] Keyboard, // Musical Keyboard Switches, 1 to 7 for C to B
+    input [6:0] Keyboard, // Musical Keyboard Switches, 1 to 7 for C to B
     input [1:0] SW,       // Mode Selection, 00 for original, 01 for delayed, 10 for instrumental
     
     input  J_MIC3_Pin3,   // PmodMIC3 audio input data (serial)
@@ -48,13 +48,13 @@ module AUDIO_FX_TOP(
       wire [11:0] instrumental;
       wire [11:0] weird;
       Delay f1 (clk_20k, MIC_in, delayed);
-     // Music_Instrument f2 (Keyboard, instrumental);
+      Music_Instrument f2 (CLK, Keyboard, instrumental);
       assign weird = MIC_in;
 
     
       assign speaker_out = SW[1] ? SW[0] ? weird
-                                         : instrumental
-                                 : SW[0] ? delayed
+                                         : delayed
+                                 : SW[0] ? instrumental
                                          : MIC_in;
                                          
     /////////////////////////////////////////////////////////////////////////////////////

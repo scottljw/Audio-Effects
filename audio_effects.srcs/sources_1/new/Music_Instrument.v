@@ -12,112 +12,71 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module Music_Instrument(
-    input [7:1] key,
-    output [11:0] sound
+    input CLK,
+    input [6:0] key,
+    output [11:0] out
     );
-    reg [7:0] notes [11:0]; // 0 for nothing, 1 to 7 for C to B; based on frequency
-    reg [7:1][15:0] counter, period;
-    reg [7:1][3:0] count;
-    reg [9:0][11:0] sample;
 
-    initial begin
-        counter[1] = 0;
-        counter[2] = 0;
-        counter[3] = 0;
-        counter[4] = 0;
-        counter[5] = 0;
-        counter[6] = 0;
-        counter[7] = 0;
-
-    	period[1] = 38222;
-        period[2] = 34052;
-        period[3] = 30337;
-        period[4] = 28634;
-        period[5] = 25510;
-        period[6] = 22727;
-        period[7] = 20247;
-
-        count[1] = 0;
-        count[2] = 0;
-        count[3] = 0;
-        count[4] = 0;
-        count[5] = 0;
-        count[6] = 0;
-        count[7] = 0;
-
-        sample[0] = 127*16; 
-        sample[1] = 202*16; 
-        sample[2] = 248*16; 
-        sample[3] = 248*16; 
-        sample[4] = 202*16; 
-        sample[5] = 127*16; 
-        sample[6] = 52*16;  
-        sample[7] = 6*16;   
-        sample[8] = 6*16;   
-        sample[9] = 52*16;  
-    end
-
+    reg [18:0]counterC=19'b0000000000000000000;
+    reg [18:0]counterD=19'b0000000000000000000;
+    reg [18:0]counterE=19'b0000000000000000000;
+    reg [18:0]counterF=19'b0000000000000000000;
+    reg [17:0]counterG=18'b000000000000000000;
+    reg [17:0]counterA=18'b000000000000000000;
+    reg [17:0]counterB=18'b000000000000000000;
+    
+    reg [11:0] sound = 12'b000000000000;
+    always @ (posedge CLK) begin
     case (key)
-        default    : assign sound = notes[0];
-        7'b0000001 : assign sound = notes[1];
-        7'b0000010 : assign sound = notes[2];
-        7'b0000100 : assign sound = notes[3];
-        7'b0001000 : assign sound = notes[4];
-        7'b0010000 : assign sound = notes[5];
-        7'b0100000 : assign sound = notes[6];
-        7'b1000000 : assign sound = notes[7];
-    endcase
+    7'b0000001:
+           begin             
+           counterC <= (counterC == 382224) ? 0 : (counterC + 1);
+           sound <= (counterC == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                    : sound;
+        end
+    7'b0000010:
 
-    initial begin
-        notes[0] = 0;
-    end
-    always @ (posedge clk) begin
-        counter[1] = (counter[1] == period[1]) ? 0 : (counter[1] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
+        begin                           
+            counterD <= (counterD == 340523) ? 0 : (counterD + 1);
+            sound <= (counterD == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                     : sound;
         end
-        notes[1] = sample[count];
+    7'b0000100:
+
+        begin                           
+                counterE <= (counterE == 303371) ? 0 : (counterE + 1);
+                sound <= (counterE == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                         : sound;
+            end
+    7'b0001000:
+
+         begin                           
+                counterF <= (counterF == 286345) ? 0 : (counterF + 1);
+                sound <= (counterF == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                         : sound;
+            end
+    7'b0010000:
+
+          begin                           
+                counterG <= (counterG == 255104) ? 0 : (counterG + 1);
+                sound <= (counterG == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                         : sound;
+            end
+    7'b0100000:
+
+           begin                           
+                counterA <= (counterA == 227272) ? 0 : (counterA + 1);
+                sound <= (counterA == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                         : sound;
+            end
+    7'b1000000:
+
+            begin                           
+                counterB <= (counterB == 202476) ? 0 : (counterB + 1);
+                sound <= (counterB == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
+                                         : sound;
+            end
+    endcase
     end
-    always @ (posedge clk) begin
-        counter[2] = (counter[2] == period[2]) ? 0 : (counter[2] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
-        end
-        notes[2] = sample[count];
-    end
-    always @ (posedge clk) begin
-        counter[3] = (counter[3] == period[3]) ? 0 : (counter[3] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
-        end
-        notes[3] = sample[count];
-    end
-    always @ (posedge clk) begin
-        counter[4] = (counter[4] == period[4]) ? 0 : (counter[4] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
-        end
-        notes[4] = sample[count];
-    end
-    always @ (posedge clk) begin
-        counter[5] = (counter[5] == period[5]) ? 0 : (counter[5] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
-        end
-        notes[5] = sample[count];
-    end
-    always @ (posedge clk) begin
-        counter[6] = (counter[6] == period[6]) ? 0 : (counter[6] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
-        end
-        notes[6] = sample[count];
-    end
-    always @ (posedge clk) begin
-        counter[7] = (counter[7] == period[7]) ? 0 : (counter[7] + 1);
-        if (counter == 0) begin
-        	count = (count == 10) ? 0 : count + 1;
-        end
-        notes[7] = sample[count];
-    end
+   assign out = sound;
 endmodule

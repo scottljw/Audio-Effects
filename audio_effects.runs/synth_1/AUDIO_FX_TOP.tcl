@@ -15,6 +15,7 @@ set_property parent.project_path C:/Users/Gao/Desktop/EE2026_LabProject-master/a
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 read_verilog -library xil_defaultlib {
+  C:/Users/Gao/Desktop/EE2026_LabProject-master/audio_effects.srcs/sources_1/new/Music_Instrument.v
   C:/Users/Gao/Desktop/EE2026_LabProject-master/audio_effects.srcs/sources_1/new/SPI.v
   C:/Users/Gao/Desktop/EE2026_LabProject-master/audio_effects.srcs/sources_1/new/Delay.v
   C:/Users/Gao/Desktop/EE2026_LabProject-master/audio_effects.srcs/sources_1/new/Clock_Generator.v
