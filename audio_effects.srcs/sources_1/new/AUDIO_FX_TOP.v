@@ -67,7 +67,7 @@ module AUDIO_FX_TOP(
       wire [11:0] recorded;
       
       Delay f1 (clk_20k, MIC_in, delayed);
-      Record f3 (clk_20k, MIC_in, recorded);
+      Record f3 (clk_20k, MIC_in, button[0], button[3], recorded);
       Music_Instrument f2 (CLK, button[0], Keyboard, SW[2], instrumental, led[7:1]);
       assign speaker_out = SW[2] ? instrumental                    // 1XX for instrumental
                                  : SW[1] ? recorded                // 01X for recorded and pitch shifted
