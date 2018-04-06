@@ -42,6 +42,7 @@ module Calculate_Display(
     reg [1:0] position = 0;
     reg trig = 0;
     reg [2:0] incre;
+    reg [1:0] div;
     
 
 
@@ -104,8 +105,8 @@ module Calculate_Display(
         end
         else timer_count = timer_set;
 		
-		// blink the digit selected on the 7 seg display
-		if(trig == 1'b1) begin
+        // blink the digit selected on the 7 seg display
+	if(trig == 1'b1) begin
             case (position)
             2'b00: begin
                 timer_set_out <= {timer_set[15:4], 4'b1110};
@@ -125,14 +126,14 @@ module Calculate_Display(
         else begin
             timer_set_out <= timer_set;         // lighting up
             trig <= 1'b1;
-		end
+	end
 		
 		
-		// clear the timer when btnR is pressed
-		if (clear == 1'b1) begin
-		      watch_run <= {16 {1'b0}};         // stop watch, clear
-		end
-		else begin
+	// clear the timer when btnR is pressed
+	if (clear == 1'b1) begin
+            watch_run <= {16 {1'b0}};         // stop watch, clear
+	end
+	else begin
             if (watch_run[3:0] == 4'b1001) begin
                 watch_run[3:0] <= 4'b0000;
                 if (watch_run[7:4] == 4'b0101) begin
@@ -176,7 +177,15 @@ module Calculate_Display(
     end
     
     always @ (posedge left) begin
-        position <= position + 1;      // timer, shift left position
+	if (sw[2:1] == 2'b00 && {ctrled, mode} == 2'b10) begin
+            position <= position + 1;      // timer, shift left position
+        end
+        else begin
+            if (sw[1] == 1'b1) begin
+                div <= div - 2'b01;        // pitch shifting
+            end
+        end
+        
     end
     
     always @ (posedge recordDown) begin
@@ -228,7 +237,7 @@ module Seven_Seg_Display(
             4'b0111: cathode <= 7'b1111000;
             4'b1000: cathode <= 7'b0000000;
             4'b1001: cathode <= 7'b0010000;
-			default: cathode <= 7'b1111111;
+	    default: cathode <= 7'b1111111;
         endcase
     end
 endmodule
