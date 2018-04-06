@@ -15,6 +15,8 @@
 module Record (
     input clk_20k,
     input [11:0] data_in,
+    input restart,     // button that restart recording
+    input shift,       // button controls pitch shifting
     output reg [11:0] data_out
 );
     parameter TT = 5; // total time the module is going to record
