@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module debounce(input clk, button, output pulse);
+module Debounce(input clk, button, output pulse);
     wire [2:0] Q;
     wire f;
     my_CLOCK clock0 (clk, f);

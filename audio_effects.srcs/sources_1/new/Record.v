@@ -18,4 +18,7 @@ module Record (
     output reg [11:0] data_out
 );
     parameter TT = 5; // total time the module is going to record
+    initial begin
+        data_out = data_in;
+    end
 endmodule
