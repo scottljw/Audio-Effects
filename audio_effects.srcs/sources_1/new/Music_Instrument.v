@@ -13,10 +13,12 @@
 
 module Music_Instrument(
     input CLK,
+    input down,
+    input up,
     input [6:0] key,
     output [11:0] out
     );
-
+    
     reg [18:0]counterC=19'b0000000000000000000;
     reg [18:0]counterD=19'b0000000000000000000;
     reg [18:0]counterE=19'b0000000000000000000;
@@ -25,58 +27,61 @@ module Music_Instrument(
     reg [17:0]counterA=18'b000000000000000000;
     reg [17:0]counterB=18'b000000000000000000;
     
-    reg [11:0] sound = 12'b000000000000;
+    reg [11:0] soundC = 12'b000000000000;
+    reg [11:0] soundD = 12'b000000000000;
+    reg [11:0] soundE = 12'b000000000000;
+    reg [11:0] soundF = 12'b000000000000;
+    reg [11:0] soundG = 12'b000000000000;
+    reg [11:0] soundA = 12'b000000000000;
+    reg [11:0] soundB = 12'b000000000000;
     always @ (posedge CLK) begin
-    case (key)
-    7'b0000001:
-           begin             
-           counterC <= (counterC == 382224) ? 0 : (counterC + 1);
-           sound <= (counterC == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                    : sound;
+    if(key[6]==1)
+        begin             
+           counterC <= (counterC == ((down == 0)?(up == 0)?191112 : 95555 : (up==0)? 382224 : 191112)) ? 0 : (counterC + 1);
+           soundC <= (counterC == 0) ? (soundC == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                    : soundC;
         end
-    7'b0000010:
-
+    if(key[5]==1)
         begin                           
-            counterD <= (counterD == 340523) ? 0 : (counterD + 1);
-            sound <= (counterD == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                     : sound;
+            counterD <= (counterD == ((down == 0)?(up == 0)?170261 : 85130 : (up==0)? 340523 : 170261)) ? 0 : (counterD + 1);
+            soundD <= (counterD == 0) ? (soundD == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                     : soundD;
         end
-    7'b0000100:
-
+    if(key[4]==1)
+    
         begin                           
-                counterE <= (counterE == 303371) ? 0 : (counterE + 1);
-                sound <= (counterE == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                         : sound;
+                counterE <= (counterE == ((down == 0)?(up == 0)?151685 : 75842 : (up==0)? 303371 : 151685)) ? 0 : (counterE + 1);
+                soundE <= (counterE == 0) ? (soundE == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                         : soundE;
             end
-    7'b0001000:
-
+    if(key[3]==1)
+    
          begin                           
-                counterF <= (counterF == 286345) ? 0 : (counterF + 1);
-                sound <= (counterF == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                         : sound;
+                counterF <= (counterF == ((down == 0)?(up == 0)?143172 : 71585 : (up==0)? 286345 : 143172)) ? 0 : (counterF + 1);
+                soundF <= (counterF == 0) ? (soundF == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                         : soundF;
             end
-    7'b0010000:
-
+    if(key[2]==1)
+    
           begin                           
-                counterG <= (counterG == 255104) ? 0 : (counterG + 1);
-                sound <= (counterG == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                         : sound;
+                counterG <= (counterG == ((down == 0)?(up == 0)?127552 : 63775 : (up==0)? 255104 : 127552)) ? 0 : (counterG + 1);
+                soundG <= (counterG == 0) ? (soundG == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                         : soundG;
             end
-    7'b0100000:
-
+    if(key[1]==1)
+    
            begin                           
-                counterA <= (counterA == 227272) ? 0 : (counterA + 1);
-                sound <= (counterA == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                         : sound;
+                counterA <= (counterA == ((down == 0)?(up == 0)?113635 : 56817 : (up==0)? 227272 : 113635)) ? 0 : (counterA + 1);
+                soundA <= (counterA == 0) ? (soundA == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                         : soundA;
             end
-    7'b1000000:
-
+    if(key[0]==1)
+    
             begin                           
-                counterB <= (counterB == 202476) ? 0 : (counterB + 1);
-                sound <= (counterB == 0) ? (sound == 12'b000000000000) ? 12'b111111111111 : 12'b000000000000
-                                         : sound;
+                counterB <= (counterB == ((down == 0)?(up == 0)?101238 : 50619 : (up==0)? 202476 : 101238)) ? 0 : (counterB + 1);
+                soundB <= (counterB == 0) ? (soundB == 12'b000000000000) ? 12'b001000000000 : 12'b000000000000
+                                         : soundB;
             end
-    endcase
     end
-   assign out = sound;
+    assign out = soundC+soundD+soundE+soundF+soundG+soundA+soundB;
 endmodule

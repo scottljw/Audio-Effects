@@ -15,7 +15,13 @@ module AUDIO_FX_TOP(
     input CLK,            // 100MHz FPGA clock
     
     input [7:1] Keyboard, // Musical Keyboard Switches, 1 to 7 for C to B
-    input [1:0] SW,       // Mode Selection, 00 for original, 01 for delayed, 10 for instrumental
+    input [1:0] SW,       // Mode Selection
+    input display_ctrl,   // Display Control
+    
+    input [4:0] btn,      // Push Buttons for Feature controls, RLDUC
+    
+    output [6:0] seg,     // individual cathodes for LEDs (A to G) of 7 segment display
+    output [3:0] an,      // common anodes for LEDs of 7 segment display
     
     input  J_MIC3_Pin3,   // PmodMIC3 audio input data (serial)
     output J_MIC3_Pin1,   // PmodMIC3 chip select, 20kHz sampling clock
@@ -46,16 +52,32 @@ module AUDIO_FX_TOP(
       wire [11:0] speaker_out;
       wire [11:0] delayed;
       wire [11:0] instrumental;
-      wire [11:0] weird;
-      Delay f1 (clk_20k, MIC_in, delayed);
-      Music_Instrument f2 (CLK, Keyboard, instrumental);
-      assign weird = MIC_in;
+      wire [11:0] recorded;
+      
+      wire [4:0] button;
+      genvar i;
+      generate for (i = 0; i < 5; i = i + 1) begin
+            debounce u3 (clk_20k, btn[i], button[i]);
+      end
+      endgenerate
+      
 
-    
-      assign speaker_out = SW[1] ? SW[0] ? weird
-                                         : delayed
-                                 : SW[0] ? instrumental
-                                         : MIC_in;
+      wire [15:0] display;
+      Calculate_Display f4 (clk_20k, button[1], button[2], button[3], button[4], button[0], display);
+      Seven_Seg_Display u4 (clk_20k, display, seg, an);
+      always @ (SW) begin
+        case(SW) 
+        endcase
+      end
+      
+      
+      Delay f1 (clk_20k, MIC_in, delayed);
+      Record f3 (clk_20k, MIC_in, recorded);
+      Music_Instrument f2 (CLK, button[3], button[4], Keyboard, instrumental);
+      assign speaker_out = SW[1] ? SW[0] ? instrumental  // 11 for instrumental
+                                         : recorded      // 10 for recorded and pitch shifted
+                                 : SW[0] ? delayed       // 01 for delayed
+                                         : MIC_in;       // 00 for original
                                          
     /////////////////////////////////////////////////////////////////////////////////////
     //DAC Module: Digital-to-Analog Conversion

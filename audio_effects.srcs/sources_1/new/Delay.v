@@ -6,7 +6,7 @@
 // Team No.: Wednesday Group 06
 // Student Names: Gao Qikai, Li Jiawei
 // Matric No.: A0177350E, A0177400M
-// Description: Top Module, controlling all others
+// Description: Delay module, create an output of delayed input
 // 
 // Work Distribution:
 //////////////////////////////////////////////////////////////////////////////////

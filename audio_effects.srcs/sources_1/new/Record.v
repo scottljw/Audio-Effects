@@ -12,8 +12,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module record (
+module Record (
     input clk_20k,
-    input 
+    input [11:0] data_in,
+    output reg [11:0] data_out
 );
     parameter TT = 5; // total time the module is going to record
+endmodule
