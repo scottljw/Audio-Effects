@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="14" Path="E:/Modules/EE2026/LP/EE2026_LabProject/audio_effects.xpr">
+<Project Version="7" Minor="14" Path="E:/Modules/EE2026/EE2026_LabProject/audio_effects.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="973b187326964de684fc9e761b72d546"/>
@@ -108,12 +108,6 @@
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/audio_effects/archive_project_summary.txt">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../EE2020 EE2026 AY1718 SEM 1/Project Dev/jieyi_6oct/audio_effects/audio_effects/archive_project_summary.txt"/>
-          <Attr Name="ImportTime" Val="1507296476"/>
         </FileInfo>
       </File>
       <Config>
