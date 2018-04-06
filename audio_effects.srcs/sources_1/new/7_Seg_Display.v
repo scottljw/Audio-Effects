@@ -48,16 +48,17 @@ module Calculate_Display(
 
     initial begin
         led = 1'b1;
-		timer_set = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
-		timer_set_out = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
-		timer_count = {16 {1'b1}};
-		watch_rec = {16 {1'b1}};
-		watch_run = {16 {1'b0}};
-		note = {16 {1'b1}};
-		timeline = {16 {1'b1}};
-		mode = 1'b0;
-		note[11:3] = {{8 {1'b1}}, 1'b0};
-		incre = 3'b100;
+	timer_set = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
+	timer_set_out = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
+	timer_count = {16 {1'b1}};
+	watch_rec = {16 {1'b1}};
+	watch_run = {16 {1'b0}};
+	note = {16 {1'b1}};
+	timeline = {16 {1'b1}};
+	mode = 1'b0;
+	note[11:3] = {{8 {1'b1}}, 1'b0};
+	incre = 3'b100;
+	div = 2'b10;
     end
     
     always begin
