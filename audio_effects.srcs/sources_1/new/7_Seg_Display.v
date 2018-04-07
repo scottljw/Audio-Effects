@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module Calculate_Display(
+    input clk,
     input clk_20k,
     input [2:0] sw,           // Switches for Mode Selection
     input ctrled,             // Switches for Display Control (Timer vs Stop Watch)
@@ -21,14 +22,16 @@ module Calculate_Display(
     input clear,              // Btn Right
     input start,              // Btn Central
     input [6:0] keybroad,     // Instrumental Keyboard Input
+    input start_play,         // flag that tells that recorded audio start playing
+    input recording,          // flag that tells that audio is being recording
     output [15:0] displayVal, // Display value for 7 Segment
     output reg led            // Signal value for LED
     );
 
-    reg mode;      // {ctrled, mode} 00 for stop watch running
-                   //                01 for stop watch value recorded
-                   //                10 for timer settings
-                   //                11 for timer counting
+    reg mode = 1'b0;      // {ctrled, mode} 00 for stop watch running
+                          //                01 for stop watch value recorded
+                          //                10 for timer settings
+                          //                11 for timer counting
     reg [15:0] timer_set_out, timer_set, timer_count, watch_run, watch_rec, note, timeline;
     assign displayVal = sw[2] ? note                                  // for instrumental feature
                               : sw[1] ? timeline                      // for recorder feature
@@ -41,29 +44,60 @@ module Calculate_Display(
     reg counter = 0;
     reg [1:0] position = 0;
     reg trig = 0;
-    reg [2:0] incre;
-    reg [1:0] div;
-    
+    reg [2:0] incre = 3'b100;
+    reg [1:0] div = 2'b01;
+    reg [13:0] accum = 0;
+    reg new_clk = 0;
 
 
     initial begin
         led = 1'b1;
-	timer_set = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
-	timer_set_out = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
-	timer_count = {16 {1'b1}};
-	watch_rec = {16 {1'b1}};
-	watch_run = {16 {1'b0}};
-	note = {16 {1'b1}};
-	timeline = {16 {1'b1}};
-	mode = 1'b0;
-	note[11:3] = {{8 {1'b1}}, 1'b0};
-	incre = 3'b100;
-	div = 2'b10;
+	    timer_set = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
+	    timer_set_out = {4'b0101, 4'b1001, 4'b0101, 4'b1001};
+	    timer_count = {16 {1'b1}};
+	    watch_rec = {16 {1'b1}};
+        watch_run = {16 {1'b0}};
+	    note[11:3] = {{8 {1'b1}}, 1'b0};
+	    timeline = {16 {1'b1}};
     end
     
     always begin
         note[2:0] = incre;
     end
+    
+    always @ (posedge clk) begin
+        accum <= (accum == 5000/(2**div)-1) ? 0 : (accum + 1);
+        new_clk <= (accum == 0) ? ~new_clk : new_clk;
+    end
+    always @ (posedge new_clk, posedge start_play) begin
+        if (recording == 1'b1) begin
+            timeline = {16 {1'b1}};
+        end
+        else begin
+            if (start_play == 1'b1) begin
+                timeline = {16 {1'b0}};
+            end
+            else begin
+                if (timeline[3:0] == 4'b1001) begin
+                    timeline[3:0] <= 4'b0000;
+                    if (timeline[7:4] == 4'b0101) begin
+                        timeline[7:4] <= 4'b0000;
+                        if (timeline[11:8] == 4'b1001) begin
+                            timeline[11:8] <= 4'b0000;
+                            if (timeline[15:12] == 4'b0101) begin
+                                timeline[15:12] <= 4'b0000;
+                            end
+                            else timeline[15:12] <= timeline[15:12] + 4'b0001;
+                        end
+                        else timeline[11:8] <= timeline[11:8] + 4'b0001;
+                    end
+                    else timeline[7:4] <= timeline[7:4] + 4'b0001;
+                end
+                else timeline[3:0] <= timeline[3:0] + 4'b0001;
+            end
+        end
+    end
+    
     
     always @ (keybroad) begin
         case(keybroad)
@@ -107,7 +141,7 @@ module Calculate_Display(
         else timer_count = timer_set;
 		
         // blink the digit selected on the 7 seg display
-	if(trig == 1'b1) begin
+	    if(trig == 1'b1) begin
             case (position)
             2'b00: begin
                 timer_set_out <= {timer_set[15:4], 4'b1110};
@@ -178,7 +212,7 @@ module Calculate_Display(
     end
     
     always @ (posedge left) begin
-	if (sw[2:1] == 2'b00 && {ctrled, mode} == 2'b10) begin
+	    if (sw[2:1] == 2'b00 && {ctrled, mode} == 2'b10) begin
             position <= position + 1;      // timer, shift left position
         end
         else begin
@@ -195,16 +229,16 @@ module Calculate_Display(
 endmodule
 
 module Seven_Seg_Display(
-    input clk_20k,
+    input clk,
     input [15:0] num,
     output reg [6:0] cathode,
     output reg [3:0] anode
     );
-    reg [5:0] divider = 0;
+    reg [4:0] divider = 0;
     reg [1:0] counter = 0;
     reg [4:0] BCD;
     
-    always @ (posedge clk_20k) begin
+    always @ (posedge clk) begin
         divider <= divider + 1;
         counter <= (divider == 0) ? (counter + 1) : counter;
     end

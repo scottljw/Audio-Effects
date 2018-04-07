@@ -18,14 +18,14 @@ module Clock_Generator(
     output clk_50M       // my 50MHz clock
     );
     reg counter2 = 0;                   // counter for 50M
-    reg [12:0]counter1 = {13 {1'b0}};  // counter for 20k
+    reg [12:0]counter1 = {13 {1'b0}};   // counter for 20k
     initial begin
         clk_20k = 0;
     end
-    always @ (posedge CLK) begin                                // procedural assignment
+    always @ (posedge CLK) begin
         counter2 <= counter2 ^ 1;                               // toggle
-        counter1 <= (counter1 == 2499) ? 0 : (counter1 + 1);    // counting 2500 times, then clear
+        counter1 <= (counter1 == 2499) ? 0 : (counter1 + 1);    // count 2500 times, then clear
         clk_20k <= (counter1 == 0) ? ~clk_20k : clk_20k;        // toggle when counter is 0
-    end                                                         // non-blocking assigning
-    assign clk_50M = counter2;                                  // continuously assignment
+    end
+    assign clk_50M = counter2;
 endmodule

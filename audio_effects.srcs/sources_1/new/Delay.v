@@ -18,11 +18,11 @@ module Delay(
     );
     reg [11:0] memory [0:32767];  // 2D array as buffer
     reg [14:0] i = 0;             // writing position
-    reg [14:0] j = 12768;         // reading position
+    reg [14:0] j = 12768;             // reading position
     always @ (posedge CLOCK) begin
         memory[i] <= data_in;
         i <= i + 1;
         j <= j + 1;
-        data_out <= memory[j];    // delay is 16 - (5 + 1) = 10 periods, 1s
+        data_out <= memory[j];    // delay is (32767 + 1) - 12768 = 20000 periods, 1s
     end
 endmodule
