@@ -55,22 +55,20 @@ module Record (
             memory[counter] <= data_in;
             counter <= counter + {{16 {1'b0}}, 1'b1};
         end
-        else begin
-            counter <= {17 {1'b0}};
-        end
         
         if (restart == 1'b1) begin
-            writing <= 1'b1;      // start writing
+            writing <= 1'b1;             // start writing
+            counter <= {17 {1'b0}};
         end
         else begin
             if (counter == TT) begin       // read
-                writing <= 1'b0;           // stop writing
                 if (writing == 1'b1) begin
                     clear_reading <= 1'b1;  // start reading
                 end
                 else begin
                     clear_reading <= 1'b0;  // reading in progress
                 end
+                writing <= 1'b0;           // stop writing
             end
         end
     end
