@@ -20,8 +20,7 @@ module Record (
     input shift,               // button controls pitch shifting
     output reg [11:0] data_out,
     output reg clear_reading,  // flag of reading status, posedge for starting
-    output reg writing,        // flag of writing status, 0 for completed
-    output reg new_clk
+    output reg writing        // flag of writing status, 0 for completed
 );
 
     parameter TT = 200000;                 // Total Record Time, 20000 is 1s
@@ -35,11 +34,12 @@ module Record (
         data_out = data_in;
         clear_reading = 1'b0;
         writing = 1'b1;
-        new_clk = 0;
+        
     end
     
     reg [1:0] freq = 2'b01;
     reg [15:0] accum = 0;
+    reg new_clk = 0;
     always @ (posedge shift) begin
         freq <= freq - 2'b01;
     end

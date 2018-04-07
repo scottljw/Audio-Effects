@@ -24,7 +24,6 @@ module Calculate_Display(
     input [6:0] keybroad,     // Instrumental Keyboard Input
     input start_play,         // flag that tells that recorded audio start playing
     input recording,          // flag that tells that audio is being recording
-    input new_clk,
     output [15:0] displayVal, // Display value for 7 Segment
     output reg led            // Signal value for LED
     );
@@ -74,6 +73,10 @@ module Calculate_Display(
     
     
     // record stuffs
+
+    reg [15:0] accum = 0;
+    reg new_clk = 0;
+    
     always @ (posedge new_clk, posedge start_play, posedge recording) begin
         if (recording == 1'b1) begin
             timeline = {16 {1'b1}};
@@ -134,6 +137,11 @@ module Calculate_Display(
         counter <= (divider == 0) ? ~counter : counter;
     end
     always @ (posedge counter, posedge clear) begin
+        // the new clock for the record
+        accum <= (accum == 5000/(2**div)-1) ? 0 : (accum + 1);
+        new_clk <= (accum == 0) ? ~new_clk : new_clk;
+    
+
         // start timer and counting down every sec
         if ({ctrled, mode} == 2'b11) begin
             if (timer_count[3:0] == 4'b0000) begin
