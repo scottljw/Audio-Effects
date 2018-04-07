@@ -24,6 +24,7 @@ module Calculate_Display(
     input [6:0] keybroad,     // Instrumental Keyboard Input
     input start_play,         // flag that tells that recorded audio start playing
     input recording,          // flag that tells that audio is being recording
+    input new_clk,
     output [15:0] displayVal, // Display value for 7 Segment
     output reg led            // Signal value for LED
     );
@@ -46,8 +47,7 @@ module Calculate_Display(
     reg trig = 0;
     reg [2:0] incre = 3'b100;
     reg [1:0] div = 2'b01;
-    reg [13:0] accum = 0;
-    reg new_clk = 0;
+
 
 
     initial begin
@@ -61,15 +61,20 @@ module Calculate_Display(
 	    timeline = {16 {1'b1}};
     end
     
+    
+    
+    
     always begin
         note[2:0] = incre;
     end
     
-    always @ (posedge clk) begin
-        accum <= (accum == 5000/(2**div)-1) ? 0 : (accum + 1);
-        new_clk <= (accum == 0) ? ~new_clk : new_clk;
-    end
-    always @ (posedge new_clk, posedge start_play) begin
+    
+    
+    
+    
+    
+    // record stuffs
+    always @ (posedge new_clk, posedge start_play, posedge recording) begin
         if (recording == 1'b1) begin
             timeline = {16 {1'b1}};
         end
@@ -99,6 +104,11 @@ module Calculate_Display(
     end
     
     
+    
+    
+    
+    
+    // music keys
     always @ (keybroad) begin
         case(keybroad)
             7'b1000000: note[15:12] = 4'b0001;
@@ -114,6 +124,11 @@ module Calculate_Display(
     end
 	
 	
+	
+	
+	
+	
+	// 1s clock and related
     always @ (posedge clk_20k) begin
         divider <= (divider == 9999) ? 0 : divider + 1;
         counter <= (divider == 0) ? ~counter : counter;
@@ -165,7 +180,7 @@ module Calculate_Display(
 		
 		
 	// clear the timer when btnR is pressed
-	if (clear == 1'b1) begin
+        if (clear == 1'b1) begin
             watch_run <= {16 {1'b0}};         // stop watch, clear
 	end
 	else begin
@@ -188,6 +203,11 @@ module Calculate_Display(
         end
         
     end
+	
+	
+	
+	
+	
 	
 	
     always @ (posedge start) begin
@@ -227,6 +247,16 @@ module Calculate_Display(
         watch_rec <= watch_run;        // stop watch, capture
     end
 endmodule
+
+
+
+
+
+
+
+
+
+
 
 module Seven_Seg_Display(
     input clk,

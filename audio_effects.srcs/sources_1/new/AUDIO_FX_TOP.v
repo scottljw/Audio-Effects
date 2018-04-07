@@ -69,7 +69,7 @@ module AUDIO_FX_TOP(
       wire recording;
       
       Delay f1 (clk_20k, MIC_in, delayed);
-      Record f3 (CLK, clk_20k, MIC_in, button[0], button[3], recorded, start_play, recording);
+      Record f3 (CLK, clk_20k, MIC_in, button[0], button[3], recorded, start_play, recording, new_clock);
       Music_Instrument f2 (CLK, button[0], Keyboard, SW[2], instrumental, led[7:1]);
       assign speaker_out = SW[2] ? instrumental                    // 1XX for instrumental
                                  : SW[1] ? recorded                // 01X for recorded and pitch shifted
@@ -81,7 +81,7 @@ module AUDIO_FX_TOP(
     // 7 Segment display feature as the supplement of audio features 
     // Please implement some extra feature(s) and instantiate the related modules here.
       wire [15:0] display;
-      Calculate_Display f4 (CLK, clk_20k, SW, display_ctrl, button[1], button[2], button[3], button[4], button[0], Keyboard, start_play, recording, display, ldsg);
+      Calculate_Display f4 (CLK, clk_20k, SW, display_ctrl, button[1], button[2], button[3], button[4], button[0], Keyboard, start_play, recording, new_clock, display, ldsg);
       Seven_Seg_Display u4 (clk_20k, display, seg, an);
 
                                          

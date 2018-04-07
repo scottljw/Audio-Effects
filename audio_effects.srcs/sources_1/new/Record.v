@@ -20,10 +20,11 @@ module Record (
     input shift,               // button controls pitch shifting
     output reg [11:0] data_out,
     output reg clear_reading,  // flag of reading status, posedge for starting
-    output reg writing         // flag of writing status, 0 for completed
+    output reg writing,        // flag of writing status, 0 for completed
+    output reg new_clk
 );
 
-    parameter TT = 16384;                 // Total Record Time, 20000 is 1s
+    parameter TT = 32768;                 // Total Record Time, 20000 is 1s
     reg [11:0] memory [0:TT-1];           // Bigger buffer
     reg [16:0] counter = {17 {1'b0}};     // writing position
     reg [16:0] reader = {17 {1'b0}};      // reading position
@@ -31,52 +32,44 @@ module Record (
     
     
     initial begin
-        data_out = {12 {1'b0}};
+        data_out = data_in;
         clear_reading = 1'b0;
         writing = 1'b1;
+        new_clk = 0;
     end
     
     reg [1:0] freq = 2'b01;
     reg [13:0] accum = 0;
-    reg new_clk = 0;
+    always @ (posedge shift) begin
+        freq <= freq - 2'b01;
+    end
     always @ (posedge clock) begin
         accum <= (accum == 5000/(2**freq)-1) ? 0 : (accum + 1);
         new_clk <= (accum == 0) ? ~new_clk : new_clk;
     end
     
-    always @ (posedge shift) begin
-        freq <= freq + 2'b01;
-    end
-    
-    always @ (trig, writing) begin
-        if (writing == 1'b1) begin
-            memory[counter] <= data_in;
-            counter <= counter + 1;
-        end
-        else begin
-            counter = {17 {1'b0}};
-        end
-    end
+
     
     always @ (posedge clk_20k, posedge restart) begin
-        if (restart == 1'b0 && counter != TT) begin
-            writing = 1'b1;
-            clear_reading = 1'b0;
-            trig = ~trig;
+        if (writing == 1'b1) begin
+            memory[counter] <= data_in;
+            counter <= counter + {{16 {1'b0}}, 1'b1};
+        end
+        else begin
+            counter <= {17 {1'b0}};
         end
         
+        if (restart == 1'b1) begin
+            writing <= 1'b1;      // start writing
+        end
         else begin
-            if (restart == 1'b1) begin
-                writing = 1'b1;
-                clear_reading = 1'b0;
-            end
-            if (counter == TT) begin
-                writing = 1'b0;
+            if (counter == TT) begin       // read
+                writing <= 1'b0;           // stop writing
                 if (writing == 1'b1) begin
-                    clear_reading = 1'b1;
+                    clear_reading <= 1'b1;  // start reading
                 end
                 else begin
-                    clear_reading = 1'b0;
+                    clear_reading <= 1'b0;  // reading in progress
                 end
             end
         end
@@ -84,11 +77,13 @@ module Record (
     
     always @ (posedge new_clk, posedge clear_reading) begin
         if (clear_reading == 1'b1) begin
-            reader = {17 {1'b0}};
+            reader <= {17 {1'b0}};
         end
-        else if (writing == 1'b0) begin
-            reader <= reader + 1;
-            data_out <= memory[reader];
+        else begin
+            if (writing == 1'b0) begin
+                reader <= reader + {{16 {1'b0}}, 1'b1};
+                data_out <= memory[reader];
+            end
         end
     end
     
