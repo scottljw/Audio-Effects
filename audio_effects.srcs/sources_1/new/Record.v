@@ -24,7 +24,7 @@ module Record (
     output reg new_clk
 );
 
-    parameter TT = 32768;                 // Total Record Time, 20000 is 1s
+    parameter TT = 200000;                 // Total Record Time, 20000 is 1s
     reg [11:0] memory [0:TT-1];           // Bigger buffer
     reg [16:0] counter = {17 {1'b0}};     // writing position
     reg [16:0] reader = {17 {1'b0}};      // reading position
@@ -39,7 +39,7 @@ module Record (
     end
     
     reg [1:0] freq = 2'b01;
-    reg [13:0] accum = 0;
+    reg [15:0] accum = 0;
     always @ (posedge shift) begin
         freq <= freq - 2'b01;
     end
@@ -53,7 +53,7 @@ module Record (
     always @ (posedge clk_20k, posedge restart) begin
         if (writing == 1'b1) begin
             memory[counter] <= data_in;
-            counter <= counter + {{16 {1'b0}}, 1'b1};
+            counter <= (counter == TT) ? counter : counter + {{16 {1'b0}}, 1'b1};
         end
         
         if (restart == 1'b1) begin
